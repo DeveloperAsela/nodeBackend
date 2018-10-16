@@ -14,6 +14,9 @@ const drive = google.drive({version: 'v2'});
 const user = require("./user/user.router");
 const supplier = require("./supplier/supplier.router");
 const project = require("./project/project.router");
+const stage = require("./project/stage.router");
+
+
 const area = require("./area/area.router");
 
 app.use(morgan('dev'));
@@ -57,8 +60,8 @@ app.use(function (req, res, next) {
 });
 
 app.use("/user", user);
-app.use("/supplier", supplier);
 app.use("/project", project);
+app.use("/stage", stage);
 app.use("/area", area);
 
 
