@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
 const url = require('url');
-
 const mongoose = require('mongoose');
 const Project = require('./project.model');
 
@@ -12,23 +10,7 @@ const Project = require('./project.model');
  * 
 **/
 router.post("/add", (req, res) => {
-    areasOf = []
-    behaviour = {}
-    // for (let i = 0; i < req.body.areas.length; i++) {
-    //     const element = req.body.areas[i];
-    //    areasOf.push(element);
-    // }
-    if (req.body.type == "implement") {
-        this.behaviour = {
-            implement: true,
-            supply: false
-        }
-    } else {
-        this.behaviour = {
-            implement: false,
-            supply: true
-        }
-    }
+
     const project = new Project({
         _id: mongoose.Types.ObjectId(),
         stageName: req.body.stageName,
@@ -42,6 +24,28 @@ router.post("/add", (req, res) => {
             console.log(result);
             return res.status(200).json({
                 "sucess": "project is added successfully"
+            })
+        }
+    ).catch(
+        error => {
+            return res.status(500).json({
+                "error": error
+            })
+        }
+    );
+});
+
+router.post("/sort", (req, res) => {
+    Project.find({
+        stageName : req.body.stageName,
+        areaName : req.body.areaName,
+        type : req.body.type,
+
+
+    }).exec().then(
+        (result) => {
+            return res.status(200).json({
+                result : result
             })
         }
     ).catch(

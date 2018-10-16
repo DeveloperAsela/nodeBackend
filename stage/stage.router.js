@@ -6,7 +6,7 @@ const url = require('url');
 const mongoose = require('mongoose');
 const Area = require('../area/area.model');
 
-const Stage = require('./project.model');
+const Stage = require('./stage.model');
 
 router.post("",(req, res)=>{
 

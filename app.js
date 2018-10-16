@@ -12,9 +12,9 @@ const drive = google.drive({version: 'v2'});
 
 
 const user = require("./user/user.router");
-const supplier = require("./supplier/supplier.router");
+
 const project = require("./project/project.router");
-const stage = require("./project/stage.router");
+const stage = require('./stage/stage.router');
 
 
 const area = require("./area/area.router");
@@ -58,10 +58,13 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-
+app.get("",(req, res)=>{
+  return res.send("Your are connect")
+})
 app.use("/user", user);
-app.use("/project", project);
 app.use("/stage", stage);
+app.use("/project", project);
+
 app.use("/area", area);
 
 
