@@ -18,6 +18,8 @@ const stage = require('./stage/stage.router');
 
 
 const area = require("./area/area.router");
+const fileupload = require("./uploadFiles/file");
+
 
 app.use(morgan('dev'));
 
@@ -59,13 +61,35 @@ app.use(function (req, res, next) {
     next();
 });
 app.get("",(req, res)=>{
-  return res.send("Your are connect")
+    if(typeof require !== 'undefined') XLSX = require('xlsx');
+    var workbook = XLSX.readFile('./uploadFiles/temp/test.xlsx');
+
+    // var buffer = Buffer.concat(buffers);
+    // var workbook = xlsx.parse(buffer);
+    // console.log("workbook", workbook);
+
+    // var sheet_name_list = workbook.SheetNames;
+    // //if you have multiple sheets
+    // data = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]); 
+
+    // for(var key in data){
+    //    console.log(data[key]['yourColumn']);
+    // }
+    var sheet_name_list = workbook.SheetNames;
+    data = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]); 
+    list = [];
+    for (let i = 0; i < 2; i++) {
+        const element = data[i];
+         list.push(element)
+        
+    }
+    return res.send(list)
 })
 app.use("/user", user);
 app.use("/stage", stage);
 app.use("/project", project);
-
 app.use("/area", area);
+app.use("/file", fileupload);
 
 
 app.listen(port, (err) => {
