@@ -37,9 +37,9 @@ router.post("/add", (req, res) => {
 
 router.post("/sort", (req, res) => {
     Project.find({
-        stageName : req.body.stageName,
-        areaName : req.body.areaName,
-        type : req.body.type,
+        stageName : req.body.projectName,
+        areaName : req.body.projectArea,
+        type : req.body.projectType,
 
 
     }).exec().then(
