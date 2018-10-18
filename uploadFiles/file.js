@@ -5,17 +5,18 @@ const multer = require('multer');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './temp')
+        cb(null, './uploadFiles/temp')
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
+        cb(null, Date.now()  + '-' + file.originalname)
     }
 });
 
 var upload = multer({ storage: storage }).single('file')
 
 
-router.post("/upload", (err, req, res, next) => {
+router.post("/upload", (req, res) => {
+
     upload(req, res, function (err) {
         if (err) {
             return res.status(501).json({
@@ -23,12 +24,9 @@ router.post("/upload", (err, req, res, next) => {
             });
         }
         return res.status(501).json({
-            originalFileName: req.file.originalFileName,
-            uploadFileName: req.file.fileName
+            originalname: req.file.originalname,
+            uploadnnodemame: req.file.fileName
         });
     })
 });
-
-router.post("/download")
-
 module.exports = router;
