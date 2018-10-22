@@ -5,19 +5,12 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const xlsx = require('xlsx');
-const fs = require('fs');
-const {google} = require('googleapis');
-const drive = google.drive({version: 'v2'});
-
 
 const user = require("./user/user.router");
-
 const project = require("./project/project.router");
 const stage = require('./stage/stage.router');
 const viewBoq = require('./uploadFiles/readexel');
 const multer = require('multer');
-
 
 
 const area = require("./area/area.router");
@@ -100,6 +93,8 @@ app.post("/upload", (req, res, next) => {
         });
     })
 });
+
+
 
 
 
