@@ -14,8 +14,16 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('file')
 
+router.get("",(req, res)=>{
+    return res.status(501).json({
+       message : "someyhing is good"
+    });
+})
 
-router.post("/upload", (err, req, res, next) => {
+
+router.post("/upload", (req, res, next) => {
+
+   
     upload(req, res, function (err) {
         if (err) {
             return res.status(501).json({
@@ -29,6 +37,6 @@ router.post("/upload", (err, req, res, next) => {
     })
 });
 
-router.post("/download")
+
 
 module.exports = router;

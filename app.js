@@ -15,6 +15,9 @@ const user = require("./user/user.router");
 
 const project = require("./project/project.router");
 const stage = require('./stage/stage.router');
+const viewBoq = require('./uploadFiles/readexel');
+const multer = require('multer');
+
 
 
 const area = require("./area/area.router");
@@ -41,7 +44,8 @@ const port = 3000;
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.header('Access-Control-Allow-Credentials','true')
 
     // Request methods you wish to allow
 
@@ -60,36 +64,43 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-app.get("",(req, res)=>{
-    if(typeof require !== 'undefined') XLSX = require('xlsx');
-    var workbook = XLSX.readFile('./uploadFiles/temp/test.xlsx');
-
-    // var buffer = Buffer.concat(buffers);
-    // var workbook = xlsx.parse(buffer);
-    // console.log("workbook", workbook);
-
-    // var sheet_name_list = workbook.SheetNames;
-    // //if you have multiple sheets
-    // data = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]); 
-
-    // for(var key in data){
-    //    console.log(data[key]['yourColumn']);
-    // }
-    var sheet_name_list = workbook.SheetNames;
-    data = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]); 
-    list = [];
-    for (let i = 0; i < 2; i++) {
-        const element = data[i];
-         list.push(element)
-        
-    }
-    return res.send(list)
+app.get('', function (req, res) {
+    res.send("sd")
 })
 app.use("/user", user);
 app.use("/stage", stage);
 app.use("/project", project);
 app.use("/area", area);
 app.use("/file", fileupload);
+app.use("/view", viewBoq);
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './temp')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage }).single('file');
+
+
+app.post("/upload", (req, res, next) => {
+
+   
+    upload(req, res, function (err) {
+        if (err) {
+            return res.status(501).json({
+                error: err
+            });
+        }
+        return res.status(200).json({
+           message :  "fsdfdsfdsfsdfdsfsdf"
+        });
+    })
+});
+
 
 
 app.listen(port, (err) => {

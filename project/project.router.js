@@ -3,12 +3,16 @@ const router = express.Router();
 const url = require('url');
 const mongoose = require('mongoose');
 const Project = require('./project.model');
+const multer = require('multer');
 
 
 /** 
  * add a new Project
  * 
 **/
+
+
+
 router.post("/add", (req, res) => {
 
     const project = new Project({
@@ -16,7 +20,7 @@ router.post("/add", (req, res) => {
         stageName: req.body.stageName,
         areaName: req.body.areaName,
         type: req.body.type,
-        uploadFile: req.body.uploadFile,
+        boqFileName: req.body.boqFileName
 
     });
     project.save().then(
@@ -122,4 +126,5 @@ router.put("", (req, res) => {
         })
     });
 });
+
 module.exports = router;

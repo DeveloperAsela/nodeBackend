@@ -7,7 +7,7 @@ const projectSchema = mongoose.Schema({
     stageName: { type: String, required: true },
     areaName: { type: String, required: true },
     type: { type: String, required: true },
-    uploadFile: { type: String, required: true },
+    boqFileName: { type: String, required: true },
 
     
 });
