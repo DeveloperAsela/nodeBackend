@@ -5,19 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const xlsx = require('xlsx');
-const fs = require('fs');
-const {google} = require('googleapis');
-const drive = google.drive({version: 'v2'});
-
 
 const user = require("./user/user.router");
-
 const project = require("./project/project.router");
 const stage = require('./stage/stage.router');
-const viewBoq = require('./uploadFiles/readexel');
-
-
 
 const area = require("./area/area.router");
 const fileupload = require("./uploadFiles/file");
@@ -70,7 +61,7 @@ app.use("/stage", stage);
 app.use("/project", project);
 app.use("/area", area);
 app.use("/file", fileupload);
-app.use("/view", viewBoq);
+
 
 
 
