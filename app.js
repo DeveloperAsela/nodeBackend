@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
 
-const bodyParser = require("body-parser");
+const parser = require("body-parser");
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 
 const user = require("./user/user.router");
-const project = require("./project/project.router");
-const stage = require('./stage/stage.router');
-const viewBoq = require('./uploadFiles/readexel');
+// const project = require("./project/project.router");
+// const stage = require('./stage/stage.router');
+// const viewBoq = require('./uploadFiles/readexel');
 const multer = require('multer');
 
 
@@ -19,12 +19,7 @@ const fileupload = require("./uploadFiles/file");
 
 app.use(morgan('dev'));
 
-
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
-
-var connect = mongoose.connect("mongodb://localhost:27017/mobitel", { useNewUrlParser: true });
+var connect = mongoose.connect("mongodb://localhost:27017/research", { useNewUrlParser: true });
 if (connect) {
     console.log("connection is started.....")
 } else {
@@ -34,11 +29,24 @@ if (connect) {
 
 const port = 3000;
 
+
+
+
+
+
+
+// app.use(parser.json({limit: '200mb'}));
+// app.use(parser.urlencoded({limit: '200mb', extended: true}));
+// app.use(parser.urlencoded({ extended: false }))
+
+
+
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    res.header('Access-Control-Allow-Credentials','true')
+    res.header('Access-Control-Allow-Credentials', 'true')
 
     // Request methods you wish to allow
 
@@ -61,11 +69,11 @@ app.get('', function (req, res) {
     res.send("sd")
 })
 app.use("/user", user);
-app.use("/stage", stage);
-app.use("/project", project);
-app.use("/area", area);
-app.use("/file", fileupload);
-app.use("/view", viewBoq);
+// app.use("/stage", stage);
+// app.use("/project", project);
+// app.use("/area", area);
+// app.use("/file", fileupload);
+// app.use("/view", viewBoq);
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -76,27 +84,25 @@ var storage = multer.diskStorage({
     }
 });
 
-var upload = multer({ storage: storage }).single('file');
+var upload = multer({ storage: storage }).single('image');
 
+app.post('/uploadfile', (req, res, next) => {
 
-app.post("/upload", (req, res, next) => {
-
-   
     upload(req, res, function (err) {
         if (err) {
-            return res.status(501).json({
+            console.log(err)
+            return res.status(401).json({
                 error: err
-            });
+            })
         }
+        console.log(req.file)
         return res.status(200).json({
-           message :  "fsdfdsfdsfsdfdsfsdf"
-        });
+            status: true,
+            message: `${req.file.originalname} is uploaded successfully.`
+        })
+        
     })
-});
-
-
-
-
+})
 
 app.listen(port, (err) => {
     if (err) {
